@@ -1,0 +1,58 @@
+Trabalho 1 – Jogo do Galo
+
+Escreva um programa que funcione como o jogo do galo. O jogo terá dois modos de jogo: 1 jogador e 2 jogadores.
+No modo de 1 jogador, será jogado contra o computador. Este computador insere a sua escolha de forma aleatória. (Math.floor(Math.random() * max)).
+No modo de 2 jogadores, será jogado à vez.
+
+Funcionamento Base
+O jogo terá um tabuleiro 3x3 e cada utilizador poderá escolher o caracter que quer para jogar. Terá de ser escrito para o ecrã o campo, em todos os turnos.
+A manipulação do campo terá de ser trabalhada com funções à parte:
+1.	jogadaTab(tabuleiro, caracter, x, y)  - Altera o valor do tabuleiro, de acordo com a posição da matriz e retorna o tabuleiro alterado
+2.	limparTab() – Retorna um tabuleiro com espaços vazios
+3.	verificarCondicaoVitoria(tabuleiro) – Caso o mesmo caracter aparece 3 vezes em linha, coluna ou diagonal, retorna True. Caso contrário, retorna False.
+O jogo em si, terá de ser outra função, que recebe os caracteres de cada jogador, e uma variável booleana que diz se é para jogar contra o computador.
+
+Avançado
+Criar um sistema de pontuação. Cada jogador terá de escolher um nome, e a cada vitoria associada a esse nome, aumenta por 1 o número de vitorias. Terá de ser criado uma JSON de vitorias, em que a chave é o nome e o número de vitorias é o valor
+
+
+Requisitos:
+50% - Funcionamento Base
+10% - Modo 1 Jogador
+10% - Modo 2 Jogador
+20% - Indentação/Boas Praticas do código
+10% - Pontuação
+
+Exemplo
+
+Let tabuleiro = [[“1”,”2”,”3”]]; [[“1”,”2”,”3”]]; [[“1”,”2”,”3”]];
+for (let i = 0; i < matriz.length; i++){ 
+    let linhaCaracteres = "";
+    for (let j = 0; j < matriz[i].length; j++){
+        linhaCaracteres += matriz[i][j];
+
+        if(j + 1 != matriz[i].length){
+            linhaCaracteres += " |";
+        }
+        
+    }
+
+    console.log(linhaCaracteres);
+}
+  |   |
+  |   |
+  |   |
+Jogador 1:
+Insira a posição:
+Input: 1, 1
+
+
+X |   |
+  |   |
+  |   |
+Jogador 2:
+Insira a posição:
+Input:
+
+Referencias
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
