@@ -3,7 +3,6 @@ const prompt = require('prompt-sync')({ sigint: true })
 let chave = '0';
 
 //Tabuleiro
-
 let tabuleiro = [
     [' ', ' ', ' '],
     [' ', ' ', ' '],
@@ -18,22 +17,6 @@ let tabuleiro = [
 // let posicao_i = '';
 // let posicao_j = '';
 
-// validar o caracter no momento da escolha da variavel.
-// Função para validar o caractere
-
-function validarCaractere(char) {
-    return char != '' && char != ' ';
-};
-
-// função para validar as posições das jogadas
-function validarPosicoes(x, y) {
-    if (x >= 0 && x <= 2 && y >= 0 && y <= 2 && x != '' && x != ' ' && y != '' && y != ' ') {
-        if(tabuleiro[x][y] == '' || tabuleiro[x][y] == ' ')
-        return true;
-    }
-    return false;
-}
-
 
 // FUNÇÕES
 
@@ -41,6 +24,7 @@ function inserirJogadaNoTabuleiro(tabuleiro, char, x, y) {
     tabuleiro[x][y] = char;
     return tabuleiro;
 }
+
 
 function mostraTabuleiro(char1, char2, jogador1, jogador2) {
 
@@ -99,13 +83,19 @@ function ehOFim(tabuleiro, jogador1, jogador2) {
     // Verificar diagonais
     if ((tabuleiro[0][0] == jogador2 && tabuleiro[1][1] == jogador2 && tabuleiro[2][2] == jogador2) ||
         (tabuleiro[0][2] == jogador2 && tabuleiro[1][1] == jogador2 && tabuleiro[2][0] == jogador2)) {
-        console.log('\n');
+
         console.log('Fim de Jogo o ' + jogador2 + ' ganhou');
         return true;
     }
 
     return false;
 }
+
+// Apagar pois n]ao preciso
+//function configJogo(escolha) {
+
+//}
+
 
 while (chave != '9') {
 
@@ -128,20 +118,12 @@ while (chave != '9') {
             inputNome1 = prompt('Digite o seu nome: ');
             jogador1 = inputNome1;
             inputChar1 = prompt('Qual o caracter que gostava de usar: ');
-
-            validarCaractere(inputChar1);
-            while (!validarCaractere(inputChar1)) {
-                //console.log("Caractere inválido. ");
-                inputChar1 = prompt('Digite um caractere válido: ');
-            }
-
-            console.log("Caractere válido: ", inputChar1);
             char1 = inputChar1;
             jogador2 = 'jogador2';
             char2 = 'O';
 
-            //Testar se o caractere de um jogador é igual ao outro.
-            if (char1 == char2) {
+            //Testar se o caracter do char1 == ao do char2.
+            if(char1 == char2){
                 char2 = 'X';
             }
 
@@ -159,24 +141,14 @@ while (chave != '9') {
                 i = prompt('Digite a posição X: ');
                 j = prompt('Digite a posição Y: ');
 
-                //if (i != 0 || i != 1 || i || 2 && j != 0 || j != 1 || j || 2) {
-                //    console.log('Digite uma posição válida entre 0 e 2');
-                // }
-
-                validarPosicoes(i, j);
-
-                while (!validarPosicoes(i, j)) {
-                    console.log('Digitastes uma posição inválida.')
-                    i = prompt('Digite novamente a posição X: ');
-                    
-                    j = prompt('Digite novamente a posição Y: ');
+                if(i != 0 || i != 1 || i|| 2 && j != 0 || j != 1 || j|| 2){
+                    console.log('Digite uma posição válida entre 0 até 2');
                 }
 
                 inserirJogadaNoTabuleiro(tabuleiro, char1, i, j);
-
+                
                 console.log('\n');
                 console.log('Minha vez, >>>>>>>>>>>>>>\n');
-
                 mostraTabuleiro(char1, char2, jogador1, jogador2);
                 //Adicionar a Jogada do computador
                 //jogadaTab(tabuleiro, char2, i, j);
@@ -198,7 +170,6 @@ while (chave != '9') {
             }
 
             limparTab();
-            console.clear();
             break;
 
         case '2':
@@ -210,20 +181,16 @@ while (chave != '9') {
             inputNome2 = prompt('Digite o seu nome: ');
             jogador2 = inputNome2;
             inputChar2 = prompt('Qual o caracter que gostava de usar: ');
-            //para evitar que existam 2 caractér 
-            if(inputChar2 == char1){
-                console.log('Caractér já escolhido.');
-                inputChar2 = prompt('Digite outro: ');
-            }
             char2 = inputChar2;
             console.log('Nome do Jogador 1 : ' + jogador1 + ' caracter: ' + char1);
             console.log('Nome do Jogador 2 : ' + jogador2 + ' caracter: ' + char2);
 
-            while (!ehOFim(tabuleiro, char1, char2)) {
+            while (!ehOFim(tabuleiro, inputChar1, char2)) {
                 console.log('-----------xx------------');
 
                 let invalida = true;
                 while (invalida) {
+
                     console.log('Jogador1 Digite a sua Jogada');
                     i = prompt('Jogador1 Digite a posição X: ');
                     j = prompt('Jogador1 Digite a posição Y: ');
@@ -256,11 +223,10 @@ while (chave != '9') {
                         invalida = false;
                     }
                     else {
-                        console.log('\n');
                         console.log('Entrada inválida');
-                        console.log('\n');
                     }
                 }
+
                 //aqui inseri a jogada no tabuleiro
                 inserirJogadaNoTabuleiro(tabuleiro, char2, i, j);
 
@@ -269,7 +235,6 @@ while (chave != '9') {
 
             }
             limparTab();
-            console.clear();
             break;
 
 
@@ -289,18 +254,3 @@ while (chave != '9') {
             break;
     }
 }
-
-// var registrarVencedor = '{"atributo1": "valor 1", "atributo2": 23}';
-
-// var objeto = JSON.parse(registrarVencedor);
-
-// console.log(objeto);
-
-
-// //isto é um array de objetos
-// {
-//     "ranking" : [
-//       {"nome": "Paulo", "QTvitorias": 15},
-//       {"nome": "Maria", "QTvitorias": 12}
-//     ]
-//   }
