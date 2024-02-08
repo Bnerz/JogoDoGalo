@@ -187,7 +187,7 @@ while (chave != '9') {
             console.log('Nome do Jogador 1 : ' + jogador1 + ' caracter: ' + char1);
             console.log('Nome do Jogador 2 : ' + jogador2 + ' caracter: ' + char2);
 
-            // a função é o fim é chamada aqui ni argumento do While, ela é um bool, enquanto ela não for o fim vai ficar em LOOP.
+            // a função é ehOfim é chamada aqui pois ela é booleana, enquanto ela não for o fim vai ficar em LOOP.
             while (!ehOFim(tabuleiro, char1, char2)) {
                 console.log('-----------------------');
                 console.log('Digite a sua Jogada');
@@ -215,7 +215,7 @@ while (chave != '9') {
                 //Adicionar ehOFim(tabuleiro, char1, char2)a Jogada do computador
                 //jogadaTab(tabuleiro, char2, i, j);
 
-
+                // Essa função é para inserir a posição aleatória quando for jogar contra o computador vai sempre ser o caractér 2.
                 let invalida = true;
                 while (invalida) {
                     let aleatorioX = Math.floor(Math.random() * 3);
