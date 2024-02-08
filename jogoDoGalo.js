@@ -1,22 +1,14 @@
 const prompt = require('prompt-sync')({ sigint: true })
-// Chave para o while tesar a condição de saida.
+
+// Chave para  a condição de saida do while.
 let chave = '0';
 
 //Tabuleiro
-
 let tabuleiro = [
     [' ', ' ', ' '],
     [' ', ' ', ' '],
     [' ', ' ', ' '],
 ];
-
-//Variaveis
-// let char1 = '';
-// let char2 = '';
-// let jogador1 = '';
-// let jogador2 = '';
-// let posicao_i = '';
-// let posicao_j = '';
 
 // validar o caracter no momento da escolha da variavel.
 // Função para validar o caractere
@@ -25,26 +17,24 @@ function validarCaractere(char) {
     return char != '' && char != ' ';
 };
 
-// função para validar as posições das jogadas
+// função para validar as posições das jogadas, se é número, se está no range de 0 até 2 tanto para x ou Y, e se a ppsição é vazia
 function validarPosicoes(x, y) {
-    if (x >= 0 && x <= 2 && y >= 0 && y <= 2 && x != '' && x != ' ' && y != '' && y != ' ') {
-        if(tabuleiro[x][y] == '' || tabuleiro[x][y] == ' ')
+
+    if (!isNaN(x) && !isNaN(y) && x >= 0 && x <= 2 && y >= 0 && y <= 2 && x != '' && x != ' ' && y != '' && y != ' ' && tabuleiro[x][y] == ' ') {
         return true;
     }
     return false;
 }
 
 
-// FUNÇÕES
-
+//  Inserir ajogada no tabuleiro, as coordenadas na matraz bidimensional são feitas através do x e Y, o char é o caractér que assumirá a posição no tabulero.
 function inserirJogadaNoTabuleiro(tabuleiro, char, x, y) {
     tabuleiro[x][y] = char;
     return tabuleiro;
 }
 
+// Função padrão que vai iterar o tabuleiro e depois mostrar
 function mostraTabuleiro(char1, char2, jogador1, jogador2) {
-
-    //let tabuleiro = limparTab(); -> não vou precisar aqui
 
     for (let i = 0; i < tabuleiro.length; i++) {
 
@@ -61,7 +51,7 @@ function mostraTabuleiro(char1, char2, jogador1, jogador2) {
     }
 }
 
-
+// limpar o tabuleiro
 function limparTab() {
     tabuleiro = [
         [' ', ' ', ' '],
@@ -70,43 +60,70 @@ function limparTab() {
     ];
 }
 
-
+// Essa função verifica o primeiro as linhas e colunas depois a diagonal
 function ehOFim(tabuleiro, jogador1, jogador2) {
-    // Essa função vai verificar as linhas e as colunas do 
+    // Essa função vai verificar as linhas e as colunas do jogador1
     for (let i = 0; i < 3; i++) {
         if ((tabuleiro[i][0] == jogador1 && tabuleiro[i][1] == jogador1 && tabuleiro[i][2] == jogador1) ||
             (tabuleiro[0][i] == jogador1 && tabuleiro[1][i] == jogador1 && tabuleiro[2][i] == jogador1)) {
             console.log('Fim de Jogo o ' + jogador1 + ' ganhou');
+            
             return true;
         }
     }
 
-    // Essa função vai verificar as diagonais
+    // Essa função vai verificar as diagonais do jogador 1
     if ((tabuleiro[0][0] == jogador1 && tabuleiro[1][1] == jogador1 && tabuleiro[2][2] == jogador1) ||
         (tabuleiro[0][2] == jogador1 && tabuleiro[1][1] == jogador1 && tabuleiro[2][0] == jogador1)) {
         console.log('Fim de Jogo o ' + jogador1 + ' ganhou');
+        
         return true;
     }
-
+    // Essa função vai verificar as linhas e as colunas do jogador2
     for (let i = 0; i < 3; i++) {
         if ((tabuleiro[i][0] == jogador2 && tabuleiro[i][1] == jogador2 && tabuleiro[i][2] == jogador2) ||
             (tabuleiro[0][i] == jogador2 && tabuleiro[1][i] == jogador2 && tabuleiro[2][i] == jogador2)) {
             console.log('Fim de Jogo o ' + jogador2 + ' ganhou');
+            
             return true;
         }
     }
 
-    // Verificar diagonais
+    // Essa função vai verificar as diagonais do jogador 2
     if ((tabuleiro[0][0] == jogador2 && tabuleiro[1][1] == jogador2 && tabuleiro[2][2] == jogador2) ||
         (tabuleiro[0][2] == jogador2 && tabuleiro[1][1] == jogador2 && tabuleiro[2][0] == jogador2)) {
         console.log('\n');
         console.log('Fim de Jogo o ' + jogador2 + ' ganhou');
+        
         return true;
     }
 
-    return false;
+    return verificarEmpate(tabuleiro);
+
 }
 
+// essa função vai verificar as condições de empate do jogo, esta sendo chamada na função acima
+function verificarEmpate(tabuleiro) {
+    // Verificar se todas as células foram preenchidas e nenhum jogador venceu
+    for (let i = 0; i < tabuleiro.length; i++) {
+        for (let j = 0; j < tabuleiro[i].length; j++) {
+            // Se houver uma célula vazia, o jogo não está empatado
+            if (tabuleiro[i][j] == ' ') {
+                return false;
+            }
+        }
+    }
+    // Vai verificar por fim se nenhum jogador venceu e todas as células foram preenchidas, portanto é um empate
+    console.log('Fim de Jogo, empate!!!!!');
+    return true;
+}
+
+
+
+
+
+
+// o while vai iniciar e enquanto a chave não for o nove, que é atribuido quando digitamos a opção 0 do menu e após confirmamos atribuimos a variável "chave" o valor para sair do while.
 while (chave != '9') {
 
     //MENU DO JOGO//
@@ -116,7 +133,6 @@ while (chave != '9') {
     console.log('|    * MENU DO JOGO *         |');
     console.log('| 1 - MODO 1 JOGADOR          |');
     console.log('| 2 - MODO 2 JOGADORES        |');
-    console.log('| 6 - VER HISTORICO           |');
     console.log('| 0 - PARA SAIR               |');
     console.log('|_____________________________|');
 
@@ -140,46 +156,41 @@ while (chave != '9') {
             jogador2 = 'jogador2';
             char2 = 'O';
 
-            //Testar se o caractere de um jogador é igual ao outro.
+            //Testar se o caractere de um jogador é igual ao outro se for vai ser mudado para que não haja iguais.
             if (char1 == char2) {
                 char2 = 'X';
             }
-
             console.log('Nome do Jogador 1 : ' + jogador1 + ' caracter: ' + char1);
             console.log('Nome do Jogador 2 : ' + jogador2 + ' caracter: ' + char2);
 
-            //Tenho que consertar essa parte, deveria ser um while 
-            //enquanto o jogo não terminou pois quando digitava as variaveis x e y, 
-            //voltava para o inicio do menu e não checava as posiçºoes do array
-            //fica pedindo para entrar a jogada, dando erro, rever
-
+            // a função é o fim é chamada aqui ni argumento do While, ela é um bool, enquanto ela não for o fim vai ficar em LOOP.
             while (!ehOFim(tabuleiro, char1, char2)) {
                 console.log('-----------------------');
                 console.log('Digite a sua Jogada');
                 i = prompt('Digite a posição X: ');
                 j = prompt('Digite a posição Y: ');
 
-                //if (i != 0 || i != 1 || i || 2 && j != 0 || j != 1 || j || 2) {
-                //    console.log('Digite uma posição válida entre 0 e 2');
-                // }
-
-                validarPosicoes(i, j);
-
+                //Testo se a posição tem as condições ideais para seguir em frente e atribuir as variáveis
                 while (!validarPosicoes(i, j)) {
                     console.log('Digitastes uma posição inválida.')
                     i = prompt('Digite novamente a posição X: ');
-                    
                     j = prompt('Digite novamente a posição Y: ');
                 }
-
+                //insere a jogado no tab
                 inserirJogadaNoTabuleiro(tabuleiro, char1, i, j);
 
-                console.log('\n');
-                console.log('Minha vez, >>>>>>>>>>>>>>\n');
-
+                //console log aqui somente para mostrar no console de quem é a vez daquela jogada.
+                console.log('Minha vez, >>>>>>>>>>>>>>');
+                // mostrea a jogada atual
                 mostraTabuleiro(char1, char2, jogador1, jogador2);
-                //Adicionar a Jogada do computador
+                //Finalmente se chegou ao fim chamamos o break para parar.
+                if (ehOFim(tabuleiro, char1, char2)) {
+                    break;
+                }
+
+                //Adicionar ehOFim(tabuleiro, char1, char2)a Jogada do computador
                 //jogadaTab(tabuleiro, char2, i, j);
+
 
                 let invalida = true;
                 while (invalida) {
@@ -192,13 +203,12 @@ while (chave != '9') {
                 }
 
                 //chamar a função para mostra o tabuleiro
-                console.log('\n');
-                console.log('A vez do computador,>>>>>>>\n');
+                console.log('A vez do computador,>>>>>>>');
                 mostraTabuleiro(char1, char2, jogador1, jogador2);
             }
 
             limparTab();
-            console.clear();
+
             break;
 
         case '2':
@@ -211,7 +221,7 @@ while (chave != '9') {
             jogador2 = inputNome2;
             inputChar2 = prompt('Qual o caracter que gostava de usar: ');
             //para evitar que existam 2 caractér 
-            if(inputChar2 == char1){
+            if (inputChar2 == char1) {
                 console.log('Caractér já escolhido.');
                 inputChar2 = prompt('Digite outro: ');
             }
@@ -220,22 +230,17 @@ while (chave != '9') {
             console.log('Nome do Jogador 2 : ' + jogador2 + ' caracter: ' + char2);
 
             while (!ehOFim(tabuleiro, char1, char2)) {
-                console.log('-----------xx------------');
+                console.log('Jogador 1');
+                console.log('Digite a sua Jogada');
+                i = prompt('Digite a posição X: ');
+                j = prompt('Digite a posição Y: ');
 
-                let invalida = true;
-                while (invalida) {
-                    console.log('Jogador1 Digite a sua Jogada');
-                    i = prompt('Jogador1 Digite a posição X: ');
-                    j = prompt('Jogador1 Digite a posição Y: ');
-
-                    if (tabuleiro[i][j] == ' ') {
-                        invalida = false;
-
-                    }
-                    else {
-                        console.log('Entrada inválida');
-                    }
+                while (!validarPosicoes(i, j)) {
+                    console.log('Digitastes uma posição inválida.')
+                    i = prompt('Digite novamente a posição X: ');
+                    j = prompt('Digite novamente a posição Y: ');
                 }
+
 
                 //Verificar se a posição não está ocupada
                 //aqui coloca a jogada no tabuleiro
@@ -244,32 +249,33 @@ while (chave != '9') {
                 //Função para mostraro o tabuleiro
                 mostraTabuleiro(char1, char2, jogador1, jogador2);
 
-                invalida = true;
-
-                while (invalida) {
-
-                    console.log('Jogador2 Digite a sua Jogada');
-                    i = prompt('Jogador2 Digite a posição X: ');
-                    j = prompt('Jogador2 Digite a posição Y: ');
-
-                    if (tabuleiro[i][j] == ' ') {
-                        invalida = false;
-                    }
-                    else {
-                        console.log('\n');
-                        console.log('Entrada inválida');
-                        console.log('\n');
-                    }
+                if (ehOFim(tabuleiro, char1, char2)) {
+                    break;
                 }
+
+                console.log('Jogador 2');
+                console.log('Digite a sua Jogada');
+                i = prompt('Digite a posição X: ');
+                j = prompt('Digite a posição Y: ');
+
+                while (!validarPosicoes(i, j)) {
+                    console.log('Digitastes uma posição inválida.')
+                    i = prompt('Digite novamente a posição X: ');
+                    j = prompt('Digite novamente a posição Y: ');
+                }
+
                 //aqui inseri a jogada no tabuleiro
                 inserirJogadaNoTabuleiro(tabuleiro, char2, i, j);
 
                 //chamar a função para mostrar o tabuleiro
                 mostraTabuleiro(char1, char2, jogador1, jogador2);
 
+                if (ehOFim(tabuleiro, char1, char2)) {
+                    break;
+                }
+
             }
             limparTab();
-            console.clear();
             break;
 
 
@@ -289,18 +295,3 @@ while (chave != '9') {
             break;
     }
 }
-
-// var registrarVencedor = '{"atributo1": "valor 1", "atributo2": 23}';
-
-// var objeto = JSON.parse(registrarVencedor);
-
-// console.log(objeto);
-
-
-// //isto é um array de objetos
-// {
-//     "ranking" : [
-//       {"nome": "Paulo", "QTvitorias": 15},
-//       {"nome": "Maria", "QTvitorias": 12}
-//     ]
-//   }
