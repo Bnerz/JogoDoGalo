@@ -50,6 +50,30 @@ function mostraTabuleiro(char1, char2, jogador1, jogador2) {
         console.log(linhacaracteres);
     }
 }
+//Array que guarda os registros de vencedores
+let jogadas = [];
+
+
+//Função que conta conta a quantidade de nomes nos arrays e transformar o Objeto em json {nome: nome, contagem: 12}
+function contarNomes(jogadas) {
+    // Criar um objeto para armazenar a contagem de cada nome
+    let contagemNomes = {};
+    for (const jogada of jogadas) {
+        // Incrementar a contagem do nome do jogador
+        contagemNomes[jogada] = (contagemNomes[jogada] || 0) + 1;
+    }
+
+    // Converter o objeto em um array de objetos
+    let arrayNomes = Object.entries(contagemNomes).map(([nome, contagem]) => ({ nome, contagem }));
+
+    // Ordenar o array por contagem decrescente
+    arrayNomes.sort((a, b) => b.contagem - a.contagem);
+
+    // Retornar o array ordenado
+    return arrayNomes;
+}
+//variavel recebe a função para ser lida pelo console.log() no final de cada rodada do jogo.
+let resultado = contarNomes(jogadas);
 
 // limpar o tabuleiro
 function limparTab() {
@@ -67,7 +91,7 @@ function ehOFim(tabuleiro, jogador1, jogador2) {
         if ((tabuleiro[i][0] == jogador1 && tabuleiro[i][1] == jogador1 && tabuleiro[i][2] == jogador1) ||
             (tabuleiro[0][i] == jogador1 && tabuleiro[1][i] == jogador1 && tabuleiro[2][i] == jogador1)) {
             console.log('Fim de Jogo o ' + jogador1 + ' ganhou');
-            
+            jogadas.push(jogador1);
             return true;
         }
     }
@@ -76,7 +100,7 @@ function ehOFim(tabuleiro, jogador1, jogador2) {
     if ((tabuleiro[0][0] == jogador1 && tabuleiro[1][1] == jogador1 && tabuleiro[2][2] == jogador1) ||
         (tabuleiro[0][2] == jogador1 && tabuleiro[1][1] == jogador1 && tabuleiro[2][0] == jogador1)) {
         console.log('Fim de Jogo o ' + jogador1 + ' ganhou');
-        
+        jogadas.push(jogador1);
         return true;
     }
     // Essa função vai verificar as linhas e as colunas do jogador2
@@ -84,7 +108,7 @@ function ehOFim(tabuleiro, jogador1, jogador2) {
         if ((tabuleiro[i][0] == jogador2 && tabuleiro[i][1] == jogador2 && tabuleiro[i][2] == jogador2) ||
             (tabuleiro[0][i] == jogador2 && tabuleiro[1][i] == jogador2 && tabuleiro[2][i] == jogador2)) {
             console.log('Fim de Jogo o ' + jogador2 + ' ganhou');
-            
+            jogadas.push(jogador2);
             return true;
         }
     }
@@ -94,7 +118,7 @@ function ehOFim(tabuleiro, jogador1, jogador2) {
         (tabuleiro[0][2] == jogador2 && tabuleiro[1][1] == jogador2 && tabuleiro[2][0] == jogador2)) {
         console.log('\n');
         console.log('Fim de Jogo o ' + jogador2 + ' ganhou');
-        
+        jogadas.push(jogador2);
         return true;
     }
 
@@ -207,6 +231,10 @@ while (chave != '9') {
                 mostraTabuleiro(char1, char2, jogador1, jogador2);
             }
 
+            // imprimir o json
+            resultado = contarNomes(jogadas);
+            console.log(resultado);
+
             limparTab();
 
             break;
@@ -220,6 +248,7 @@ while (chave != '9') {
             inputNome2 = prompt('Digite o seu nome: ');
             jogador2 = inputNome2;
             inputChar2 = prompt('Qual o caracter que gostava de usar: ');
+            console.log(" ");
             //para evitar que existam 2 caractér 
             if (inputChar2 == char1) {
                 console.log('Caractér já escolhido.');
@@ -273,8 +302,12 @@ while (chave != '9') {
                 if (ehOFim(tabuleiro, char1, char2)) {
                     break;
                 }
-
             }
+
+            //Imprimir o Jason
+            resultado = contarNomes(jogadas);
+            console.log(resultado);
+
             limparTab();
             break;
 
